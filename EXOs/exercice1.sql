@@ -42,6 +42,7 @@ INSERT INTO adresse (personne_id,rue,ville,code_postal)
     (2,"13 rue de l'Eglise",'Lille','59000'),
     (3,"14 rue de l'Eglise",'Lille','59000');
   
+
 DELETE FROM adresse WHERE personne_id = 3;
 DELETE FROM personne WHERE prenom = 'toto';  
     
@@ -54,3 +55,10 @@ SET
 	telephone = "1231231230" 
 WHERE
 	nom = 'dupont';
+    
+    
+-- SELECT
+
+SELECT prenom,nom FROM personne ORDER BY nom DESC;
+SELECT prenom,nom FROM personne ORDER BY titre;
+SELECT prenom,nom FROM personne WHERE email = "sj@mail.fr";
