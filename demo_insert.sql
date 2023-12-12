@@ -27,3 +27,9 @@ INSERT INTO service (libelle,date_modification)
     '2023-12-13' as date_modification;
     
 SELECT * FROM service;
+
+-- DELETE FROM
+
+-- Supprimer tous les enregistrements d'une table
+DELETE FROM service
+	WHERE libelle = 'Direction';

@@ -3,6 +3,8 @@
          exo1
 **********************/
 
+ DROP DATABASE IF EXISTS exercices;
+
 CREATE DATABASE IF NOT EXISTS exercices;
 
 USE exercices ;
@@ -23,6 +25,25 @@ CREATE TABLE adresse(
     ville VARCHAR(30),
     code_postal CHAR(5),
     CONSTRAINT fk_personne_id FOREIGN KEY (personne_id) REFERENCES personne(personne_id),
-    PRIMARY KEY (rue,ville,code_postale)
+    PRIMARY KEY (rue,ville,code_postal)
 ); 
 	
+    
+INSERT INTO personne (titre,prenom,nom,telephone,email)
+	VALUES
+    ('M','Henri','JEAN','0214526621','hj@mail.fr'),
+    ('Mme','Maguerite','JEAN','0214526621','mj@mail.fr'),
+    ('Mme','toto','JEAN','0214526621','mj@mail.fr'),
+    ('Mme','Steeve','JEANNE','0223526621','sj@mail.fr');
+    
+INSERT INTO adresse (personne_id,rue,ville,code_postal)
+	VALUES
+    (1,"12 rue de l'Eglise",'Lille','59000'),
+    (1,"12 rue de la place",'Lille','59000'),
+    (2,"13 rue de l'Eglise",'Lille','59000'),
+     (3,"14 rue de l'Eglise",'Lille','59000');
+    
+DELETE FROM adresse WHERE personne_id = 3;
+DELETE FROM personne WHERE prenom = 'toto';
+    
+SELECT* FROM adresse

@@ -36,12 +36,12 @@ CREATE TABLE IF NOT EXISTS etudiant(
 );
 
 CREATE TABLE IF NOT EXISTS classe(
- num_classe INT,
+ id INT NOT NULL AUTO_INCREMENT,
  etudiant_id INT,
  professeur_id INT,
  CONSTRAINT fk_etudiant_id FOREIGN KEY (etudiant_id) REFERENCES etudiant(id),
  CONSTRAINT fk_professeur_id FOREIGN KEY (professeur_id) REFERENCES professeur(id),
- PRIMARY KEY (num_classe)
+ PRIMARY KEY (id)
  );
 
 
@@ -95,7 +95,25 @@ INSERT INTO professeur (prenom,nom,num_classe,num_departemnt,email,telephone)
     ('Johnn','Williams',13,14,'johnn.williams@hmail.com','1122698455'),
     ('Pierre','Henri',15,12,'pierre.henri@hmail.com','1122334665');
     
-
+UPDATE etudiant
+	SET num_classe = 13
+    WHERE id = 1 ;
+    
+UPDATE etudiant
+	SET num_classe = 13
+    WHERE id = 2 ;
+    
+UPDATE etudiant
+	SET num_classe = 15
+    WHERE id = 3 ;
+    
+    
+INSERT INTO classe (etudiant_id, professeur_id)
+	VALUES
+    (1,2),
+    (1,3),
+    (2,2);
+    
     
     
 SELECT * FROM professeur;
