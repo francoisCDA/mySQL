@@ -65,7 +65,7 @@ SHOW COLUMNS FROM service;
 	-- 	ADD CONSTRAINT fk_service_id FOREIGN KEY (service_id) REFERENCES service(service);
         
 -- Ajout colonne date-heure
-ALTER TABLE salarie
+ALTER TABLE service
 		ADD COLUMN date_modification DATETIME;
         
 -- modifier la colonne en type DATE
