@@ -33,3 +33,11 @@ SELECT * FROM service;
 -- Supprimer tous les enregistrements d'une table
 DELETE FROM service
 	WHERE libelle = 'Direction';
+    
+UPDATE
+	service
+SET
+	libelle = 'IT-CREW',
+    date_modification = NOW()
+WHERE
+	libelle = 'IT';
