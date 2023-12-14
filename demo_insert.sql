@@ -63,7 +63,7 @@ INSERT INTO salarie (prenom,nom,age,salaire,service_id)
 	VALUES
     ('bill','gate',68,1253,1),
     ('billa','gata',58,6553,2),
-    ('steeve','jobs',63,3253,7),
+    ('steeve','jobs',63,3253,5),
     ('elon','musk',55,2252,5),
     ('steve','wozniak',72,6253,3),
     ('billou','gateeau',67,1953,5),
@@ -74,5 +74,21 @@ INSERT INTO salarie (prenom,nom,age,salaire,service_id)
 SELECT nom,prenom FROM salarie WHERE salaire > 1500;
 
 SELECT nom,prenom FROM salarie WHERE salaire > 3000 AND age > 33;
-
 SELECT nom,prenom FROM salarie WHERE salaire < 2000 OR age > 63;
+SELECT nom,prenom FROM salarie WHERE salaire BETWEEN 60 AND 70;
+
+-- LIMIT
+SELECT DISTINCT salaire FROM salarie;
+
+-- LIMIT
+SELECT * FROM service LIMIT 2;
+
+-- ORDER BY
+SELECT * FROm service ORDER BY libelle; -- ASC par defautl
+SELECT * FROm service ORDER BY libelle DESC; 
+
+
+
+
+
+
