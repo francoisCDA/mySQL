@@ -81,12 +81,21 @@ select * from offices;
 
 SELECT email from employees JOIN offices on employees.officeCode = offices.officeCode where firstname like "%y" or city = 'San Francisco'; 
 
+-- solution 'contrariante' de Christophe
+
+SELECT email from employees where firstname like "%y" or officeCode = (SELECT officeCode FROM offices WHERE city = "San Francisco");
+
 -- 12 - Donner le nombre de client qui sont gérés par Leslie Jennings.
 select * from customers;
 
 select employeeNumber from employees where firstName = "Leslie" and lastName= "Jennings";
 
 select * from customers where salesRepEmployeeNumber = (select employeeNumber from employees where firstName = "Leslie" and lastName= "Jennings" ) ;
+
+-- correction Christophe
+SELECT count(*) AS "Nombre de client de Leslie"
+FROM customers AS c 
+WHERE c.salesRepEmployeeNumber = (select employeeNumber from employees where firstName = "Leslie" and lastName= "Jennings" );
 
 -- 13 - Afficher le nom et prénom de la personne qui a le jobTitle de Président
 
@@ -98,12 +107,18 @@ select * from payments where paymentDate like "2005-03-%"  ;
 
 select SUM(amount) from (select * from payments where paymentDate like "2005-03-%" ) as mars;
 
+-- solution Christophe
+select SUM(amount) as somme_de_paiements from payments where payementDate between '2005-03-01' and '2005-03-31';
+
+
 -- 15 - Afficher le total des paiements par nom des clients.
 
 select * from payments;
 select * from customers;
 
 select customerName, total from customers join (select customerNumber, sum(amount) as total from payments group by customerNumber) as var on customers.customerNumber = var.customerNumber ;
+
+
 
 -- 16 - Afficher la date de commande et le numéro client des commandes annulées 
 
@@ -120,23 +135,51 @@ select employeeNumber from employees where lastName = "Bow" and firstName = "Ant
 
 select firstName,lastName from employees where reportsTo = (select employeeNumber from employees where lastName = "Bow" and firstName = "Anthony");
 
+
 -- 18 - Afficher le nom et le prénom du ou des employés qui n'ont pas de supérieur hiérarchique.
 
 select firstName,lastName from employees where reportsTo is null;
 
+
 -- 19 - Dans le detail des commandes afficher la commande avec la plus petite quantité.
 
-select * from orderdetails order by quantityOrdered limit 1;
+select * from orderdetails order by quantityOrdered limit 2;
+
+
+SELECT * FROM orderdetails where orderdetails.quantityOrdered = (SELECT Min(quantityOrdered) from orderdetails);
+
 
 -- 20 - Afficher le detail de la commande qui est datée du 21-04-2003
 
 select * from orders where orderDate = "2003-04-21%";
 
+-- correction
+
+select * from orderdetails as od join orders as o on od.ordernumber = o.ordernumber where orderdate = "2003-04-21";
+
+
 -- 21 – Afficher la liste des managers avec les employées qu’ils managent. Le nom de la colonne s’appellera ‘Manager’ pour la colonne des managers, elle 
 --      regroupera leurs noms et prénoms. Idem pour la colonne employée, elle s’appellera ‘Employée’, elle affichera le nom et prénom des employés.
 
 select * from employees where jobTitle like "%manager%" ;
+select employeeNumber,concat(firstname,' ',lastname) as managName from employees where jobTitle like "%manager%" ;
 
+select concat(firstname,' ',lastname) as emplName, managName from employees join (select employeeNumber, concat(firstname,' ',lastname) as managName from employees where jobTitle like "%manager%" ) as managers on managers.employeeNumber = employees.reportsTo ;
+
+-- Christophe
+SELECT
+	CONCAT(m.lastname,' ',m.firstname) AS "Manager",
+    CONCAT(e.lastname,' ',e.firstname) AS "employee"
+FROM employees AS e 
+INNER JOIN employees AS m
+ON m.employeeNumber = e.reportsTo;
 
 
 -- 22 – Afficher le nom des managers et le nombre d’employé qu’ils managent
+SELECT
+	CONCAT(m.lastname,' ',m.firstname) AS "Manager",
+	COUNT(CONCAT(e.lastname,' ',e.firstname))  AS nombre_employee
+FROM employees AS e 
+INNER JOIN employees AS m
+ON m.employeeNumber = e.reportsTo
+GROUP BY Manager;
