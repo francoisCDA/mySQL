@@ -18,7 +18,7 @@ SELECT customerName,contactLastName,contactFirstName FROM customers WHERE countr
 
 -- 4 - Sélectionner les emails des employées qui ont un firstname qui se termine par 'y' et qui ont un reportsTo qui commence par '105'.
 
-SELECT emails FROM employees WHERE firstName LIKE "%y"  AND reportsTo LIKE "105%" ;
+SELECT email FROM employees WHERE firstName LIKE "%y"  AND reportsTo LIKE "105%" ;
 
 -- 5 - Sélectionner les noms et emails des employees qui ont un firstname qui commence par un L.
 
@@ -36,14 +36,35 @@ SELECT * FROM employees ORDER BY officeCode;
 
 -- SELECT customerNumber FROM (SELECT customerNumber,SUM(amount) AS ttal FROM payments GROUP BY customerNumber) as selection WHERE ttal > 10000;
 
-SELECT * FROM customers JOIN (SELECT customerNumber FROM (SELECT customerNumber,SUM(amount) AS ttal FROM payments GROUP BY customerNumber) as selection WHERE ttal > 10000) AS trie ON customers.customerNumber = trie.customerNumber ;
+SELECT * FROM customers JOIN (SELECT customerNumber FROM (SELECT customerNumber,SUM(amount) AS ttal FROM payments GROUP BY customerNumber) as selection WHERE ttal > 100000) AS trie ON customers.customerNumber = trie.customerNumber ;
+
+-- solution Christophe
+select distinct (select customerName from customers where customernumber = pay.customerNumber)
+from payments as pay
+where amount > 100000;
+
+-- solution Loïc
+select cu.customerName,sum(amount) as payment
+from customers cu
+inner join payments pay on cu.customerNumber = pay.customerNumber
+group by cu.customerName
+having payment > 100000;
 
 -- 9 - Afficher le total des ventes par 'orderNumber' et 'status' ?
 
 SELECT * from orders ;
 select * from orderdetails;
 
-select orders.orderNumber, (priceEach * orderLineNumber) as total, status from orderdetails join orders on orderdetails.orderNumber = orders.orderNumber;
+-- Incomplète : select orders.orderNumber, (priceEach * orderLineNumber) as total, status from orderdetails join orders on orderdetails.orderNumber = orders.orderNumber;
+
+select ttaux.orderNumber, status, sum(total) as totaux from (select orders.orderNumber, (quantityOrdered * priceEach) as total, status from orderdetails join orders on orderdetails.orderNumber = orders.orderNumber) as ttaux group by orderNumber ORDER BY orderNumber;
+
+-- solution Christophe
+SELECT T1.orderNUMBER, status, SUM(quantityOrdered * priceEach) total 
+FROM orders AS T1
+INNER JOIN orderdetails AS T2 ON T1.orderNumber = T2.orderNumber
+GROUP BY orderNumber;
+
 
 -- 10 – Afficher les “orderNumber”, “productName”, “msrp”, “priceEach” des produits qui ont un productcode = ‘S10_1678’ et ont un msrp supérieur au priceEach.
 
@@ -114,7 +135,8 @@ select * from orders where orderDate = "2003-04-21%";
 -- 21 – Afficher la liste des managers avec les employées qu’ils managent. Le nom de la colonne s’appellera ‘Manager’ pour la colonne des managers, elle 
 --      regroupera leurs noms et prénoms. Idem pour la colonne employée, elle s’appellera ‘Employée’, elle affichera le nom et prénom des employés.
 
-select * from employees ;
+select * from employees where jobTitle like "%manager%" ;
+
 
 
 -- 22 – Afficher le nom des managers et le nombre d’employé qu’ils managent
