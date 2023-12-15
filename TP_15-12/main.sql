@@ -211,7 +211,7 @@ SELECT num_commande, date_commande, nom, prenom, nom_je
         JOIN jeux ON id_jeu = id_je;
 
 -- 2
-SELECT num_commande, date_commande, nom, prenom, nom_je, SUM(prix) as ttl
+SELECT nom, prenom, SUM(prix) as ttl
 	FROM details_commande 
 		INNER JOIN commandes ON num_commande = id_cmd
         INNER JOIN clients ON id_client = id_cl
@@ -223,6 +223,8 @@ SELECT num_commande, date_commande, nom, prenom, nom_je, SUM(prix) as ttl
     11:30:12	SELECT num_commande, date_commande, nom, prenom, nom_je, SUM(prix) as ttl  FROM details_commande    INNER JOIN commandes ON num_commande = id_cmd         JOIN clients ON id_client = id_cl         JOIN jeux ON id_jeu = id_je  GROUP BY id_cl     ORDER BY ttl DESC	Error Code: 1055. Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'tabletoptreasures_database.details_commande.num_commande' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by	0.000 sec
     */
 
+-- 3
+SELECT nom_je, nom_cat, prix FROM jeux JOIN categorie ON cat
 
 
     
