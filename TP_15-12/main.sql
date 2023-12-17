@@ -99,6 +99,8 @@ CREATE TABLE IF NOT EXISTS commandes(
 ALTER TABLE commandes
 	ADD CONSTRAINT FOREIGN KEY (id_client) REFERENCES clients(id_cl);
 
+ALTER TABLE commandes
+	ADD CONSTRAINT FOREIGN KEY (adresse_livraison) REFERENCES clients(adresse_de_livraison);
 
 /*****************************
 Effectuez trois commandes en insérant une nouvelle entrée dans la table
@@ -181,7 +183,7 @@ toutes les commandes passées.
 montant total dépensé par client. Incluez uniquement les clients ayant effectué
 au moins une commande
 *****************************************************/
-
+              
 CREATE TABLE details_commande(                             -- parce qu'une commande peut contenir plusieurs jeux, c'est plus logique que d'alterer la table commande qui n'a rien demandé à personne.
 	id_details INT AUTO_INCREMENT PRIMARY KEY,
     num_commande INT NOT NULL,
@@ -219,12 +221,22 @@ SELECT nom, prenom, SUM(prix) as ttl
 	GROUP BY id_cl
     ORDER BY ttl DESC;  
     
-    /*
-    11:30:12	SELECT num_commande, date_commande, nom, prenom, nom_je, SUM(prix) as ttl  FROM details_commande    INNER JOIN commandes ON num_commande = id_cmd         JOIN clients ON id_client = id_cl         JOIN jeux ON id_jeu = id_je  GROUP BY id_cl     ORDER BY ttl DESC	Error Code: 1055. Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'tabletoptreasures_database.details_commande.num_commande' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by	0.000 sec
-    */
 
 -- 3
-SELECT nom_je, nom_cat, prix FROM jeux JOIN categorie ON cat
+SELECT nom_je, nom_cat, prix FROM jeux JOIN categorie ON categorie = id_cat;
+
+-- 4 
+-- cf exo 1 ?
+
+-- 5
+SELECT nom, prenom, count(*) as nb_jeux_commandes, sum(prix) as depenses
+	FROM details_commande
+		INNER JOIN commandes ON num_commande = id_cmd
+        INNER JOIN clients ON id_client = id_cl
+        INNER JOIN jeux ON id_jeu = id_je
+        WHERE status_cmd <> "annulée"
+        GROUP by id_cl
+	;
 
 
     
