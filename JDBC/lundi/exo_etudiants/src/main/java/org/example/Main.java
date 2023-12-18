@@ -10,13 +10,15 @@ public class Main {
 
      //   IHM.addStudent();
 
-        IHM.showStudents();
+      // IHM.showStudents();
 
-        IHM.showClasse(12);
+      //  IHM.showClasse(12);
 
-        IHM.delete(2);
+        //IHM.delete();
 
-        IHM.showStudents();
+        //IHM.showStudents();
+
+        IHM.main();
 
     }
 }

@@ -10,6 +10,41 @@ import java.util.Scanner;
 
 public class IHM {
 
+
+    public static void main() {
+
+        int choix = -1 ;
+
+        while ( choix != 0 ) {
+
+            System.out.println("\n\tChoisir une action :\n");
+            System.out.println("\t1/ Ajouter un étudiant");
+            System.out.println("\t2/ Afficher les étudiants");
+            System.out.println("\t3/ Afficher une classe");
+            System.out.println("\t4/ Supprimer un étudiant");
+
+            System.out.println("\n\t 0/ Quitter");
+
+            choix = scan.nextInt();
+            scan.nextLine();
+
+            switch (choix) {
+                case 1 -> addStudent();
+                case 2 -> showStudents();
+                case 3 -> showClasse();
+                case 4 -> delete();
+            }
+
+        }
+
+        System.out.println("Au revoir");
+
+
+    }
+
+
+
+
     private static Scanner scan = new Scanner(System.in);
 
 
@@ -53,19 +88,31 @@ public class IHM {
 
     }
 
+
+    public static void showClasse() {
+
+        System.out.print("\n\tIndiquer la classe à afficher : ");
+        int choix = scan.nextInt();
+        scan.nextLine();
+
+        showClasse(choix);
+
+    }
+
     public static void showClasse(int num){
         ArrayList<Student> classe = Select.classe(num);
 
         classe.forEach( e -> System.out.println(e.toString()));
     }
 
-    public static void delete(int id) {
+
+    public static void delete() {
 
         System.out.print("\n Indiquer l'ID de l'étudiant à éliminer (de la base de donnée) > ");
         int target = scan.nextInt();
         scan.nextLine();
 
-        boolean cleaning = Remove.fromId(id);
+        boolean cleaning = Remove.fromId(target);
 
     }
 
