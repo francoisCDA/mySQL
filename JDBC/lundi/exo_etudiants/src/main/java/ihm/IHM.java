@@ -22,6 +22,7 @@ public class IHM {
             System.out.println("\t2/ Afficher les étudiants");
             System.out.println("\t3/ Afficher une classe");
             System.out.println("\t4/ Supprimer un étudiant");
+            System.out.println("\t5/ Rechercher un etudiant");
 
             System.out.println("\n\t 0/ Quitter");
 
@@ -33,6 +34,7 @@ public class IHM {
                 case 2 -> showStudents();
                 case 3 -> showClasse();
                 case 4 -> delete();
+                case 5 -> search();
             }
 
         }
@@ -113,6 +115,17 @@ public class IHM {
         scan.nextLine();
 
         boolean cleaning = Remove.fromId(target);
+
+    }
+
+    public static void search(){
+
+        System.out.print("\n Recherche : ");
+        String search = scan.next();
+
+        ArrayList<Student> ret = Select.like(search);
+
+        ret.forEach(st -> System.out.println(st.toString()));
 
     }
 

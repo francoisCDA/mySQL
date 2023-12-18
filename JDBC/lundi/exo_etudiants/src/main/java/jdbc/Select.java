@@ -2,13 +2,60 @@ package jdbc;
 
 import Classe.Student;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class Select {
+
+    public static ArrayList<Student> like(String search) {
+
+        ArrayList<Student> ret = new ArrayList<>();
+        Connection connection = null ;
+
+        try {
+            connection = GetConnect.getMySQLConnect();
+
+            if (connection != null) {
+
+                String requete = "SELECT * FROM etudiant WHERE first LIKE ? OR last LIKE ?";
+
+                PreparedStatement statement = connection.prepareStatement(requete);
+                statement.setString(1,"%"+search+"%");
+                statement.setString(2,"%"+search+"%");
+
+                ResultSet resultSet = statement.executeQuery();
+
+                if (resultSet.next()) {
+                    Student newStudent = new Student(resultSet.getInt("id"),
+                            resultSet.getString("last"),
+                            resultSet.getString("first"),
+                            resultSet.getInt("num_classe"),
+                            resultSet.getDate("graduation").toLocalDate()
+                    );
+
+                    ret.add(newStudent);
+                }
+
+            } else {
+                System.out.println("connection null");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (connection!= null) {
+                try {
+                    connection.close();
+                    System.out.println("connexion fermée");
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
+        return ret;
+
+    }
 
     // DEPRECATED
     public static ArrayList<String> allString() {
@@ -103,8 +150,6 @@ public class Select {
 
         return ret;
     }
-
-
 
 
     public static ArrayList<Student> classe(int numClass) {
