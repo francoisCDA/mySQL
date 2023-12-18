@@ -35,6 +35,7 @@ public class Select {
 
                     ret.add(newStudent);
                 }
+                statement.close();
 
             } else {
                 System.out.println("connection null");
@@ -81,6 +82,7 @@ public class Select {
                              + ", date du diplôme " + resultSet.getString("graduation")
                              );
                  }
+                 statement.close();
 
              } else {
                  System.out.println("!!! erreur de connexion");
@@ -129,6 +131,7 @@ public class Select {
                     ret.add(newStudent);
 
                 }
+                statement.close();
 
             } else {
                 System.out.println("!!! erreur de connexion");

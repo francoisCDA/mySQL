@@ -18,6 +18,8 @@ public class Remove {
 
             ret = statement.execute(requete);
 
+            statement.close();
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {

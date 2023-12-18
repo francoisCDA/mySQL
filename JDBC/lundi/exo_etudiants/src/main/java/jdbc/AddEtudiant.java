@@ -25,6 +25,7 @@ public class AddEtudiant {
 
                 nbRows = statement.executeUpdate();
 
+                statement.close();
 
             } else {
                 System.out.println(" !!! erreur de connexion");
