@@ -13,7 +13,8 @@ USE ma_banque;
 CREATE TABLE clients(
 	id INT AUTO_INCREMENT PRIMARY KEY,
     first VARCHAR(50),
-    last VARCHAR(50)
+    last VARCHAR(50),
+    telephone VARCHAR(12)
 );
 
 CREATE TABLE comptes(
