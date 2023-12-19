@@ -3,6 +3,7 @@ package services;
 import dao.ClientDAO;
 import dao.CompteBancaireDAO;
 import dao.OperationDAO;
+import dao.exceptions.ExeptCompte;
 import enums.Statut;
 import models.Client;
 import models.CompteBancaire;
@@ -71,43 +72,57 @@ public class ServicesBancaire {
     }
 
     public boolean deposer(int numCompte, double montant ) {
-
         try {
             CompteBancaire compte = compteBancaireDAO.get(numCompte);
 
             if (compte != null ) {
+                compte.deposer(montant);
 
-                //todo ajouter l'argent
-
-                compteBancaireDAO.update(compte);
-
-
-                Operation op = new Operation(compte.getNumero(),montant,Statut.DEPOT);
-
-
-
-
-                operationDAO.add(op);
-
+                if (compteBancaireDAO.updateSolde(compte)) {
+                    Operation op = new Operation(compte.getNumero(),montant,Statut.DEPOT);
+                    return operationDAO.add(op);
+                };
             }
-
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
-
         return false;
     }
 
-    public boolean retirer(int client, int compte, double montant) {
+
+
+    public boolean retirer(int numCompte, double montant) {
+
+        CompteBancaire compte = null;
+        try {
+            compte = compteBancaireDAO.get(numCompte);
+
+            if (compte != null ) {
+                if (compte.retirer(montant)) {
+                    if (compteBancaireDAO.updateSolde(compte)) {
+                        Operation op = new Operation(compte.getNumero(),montant,Statut.DEPOT);
+                        return operationDAO.add(op);
+                    }
+                }
+            }
+
+        } catch (SQLException | ExeptCompte e) {
+            throw new RuntimeException(e);
+        }
 
         return false;
     }
 
     public Client getClient(int id) {
 
-        return null;
+        try {
+            return clientDAO.get(id);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     public ArrayList<CompteBancaire> getComptes(int id_client) {
@@ -123,9 +138,19 @@ public class ServicesBancaire {
 
     public ArrayList<Client> getClients() {
 
+        try {
+            return new ArrayList<>(clientDAO.get());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-
-        return null;
+    public void disconnect() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

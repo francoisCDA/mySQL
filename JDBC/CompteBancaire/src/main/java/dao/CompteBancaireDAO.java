@@ -24,9 +24,10 @@ public class CompteBancaireDAO extends AbstrctDAO<CompteBancaire> {
 
     public int getNewCompteById(int id_client) throws SQLException {
 
-        request = "INSERT INTO comptes (id_client) VALUES (?)";
+        request = "INSERT INTO comptes (id_client,solde) VALUES (?,?)";
         statement = _connection.prepareStatement(request, Statement.RETURN_GENERATED_KEYS);
         statement.setInt(1,id_client);
+        statement.setDouble(2,0.0);
 
         statement.execute();
         resultSet = statement.getGeneratedKeys();
@@ -40,12 +41,22 @@ public class CompteBancaireDAO extends AbstrctDAO<CompteBancaire> {
 
 
     @Override
-    public boolean update(CompteBancaire element) throws SQLException {
+    public boolean update(CompteBancaire compteBancaire) throws SQLException {
 
         return false;
     }
 
 
+    public boolean updateSolde(CompteBancaire compteBancaire) throws SQLException {
+        request = "UPDATE compte SET solde = ? WHERE num_compte = ?";
+        statement = _connection.prepareStatement(request);
+        statement.setDouble(1,compteBancaire.getSolde());
+        statement.setInt(2,compteBancaire.getNumero());
+
+        int rows = statement.executeUpdate();
+
+        return rows == 1;
+    }
 
 
 

@@ -1,5 +1,7 @@
 package models;
 
+import dao.exceptions.ExeptCompte;
+
 import java.util.ArrayList;
 
 public class CompteBancaire {
@@ -32,6 +34,16 @@ public class CompteBancaire {
 
     public void setNumero(int numero) {
         this.numero = numero;
+    }
+
+    public void deposer(double depot) {
+        solde += depot;
+    }
+
+    public boolean retirer(double retrait) throws ExeptCompte {
+        if ( retrait > solde ) throw new ExeptCompte("Solde insuffisant, retrait impossible ");
+        solde -= retrait;
+        return true;
     }
 
     @Override

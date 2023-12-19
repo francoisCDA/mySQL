@@ -24,6 +24,11 @@ CREATE TABLE comptes(
 	CONSTRAINT FOREIGN KEY (id_client) REFERENCES clients(id)
 );
 
+ALTER TABLE comptes
+		MODIFY COLUMN solde INT UNSIGNED;
+;
+
+
 CREATE TABLE operations(
 	id_op INT AUTO_INCREMENT PRIMARY KEY,
     compte int,
@@ -32,4 +37,5 @@ CREATE TABLE operations(
     CONSTRAINT FOREIGN KEY (compte) REFERENCES comptes(num_compte)
 );
 
-
+SELECT * FROM clients;
+SELECT * FROM comptes;
