@@ -36,12 +36,9 @@ public class IHM {
                 case 4 -> delete();
                 case 5 -> search();
             }
-
         }
 
         System.out.println("Au revoir");
-
-
     }
 
 

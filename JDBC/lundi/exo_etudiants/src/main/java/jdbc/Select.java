@@ -32,7 +32,6 @@ public class Select {
                             resultSet.getInt("num_classe"),
                             resultSet.getDate("graduation").toLocalDate()
                     );
-
                     ret.add(newStudent);
                 }
                 statement.close();
