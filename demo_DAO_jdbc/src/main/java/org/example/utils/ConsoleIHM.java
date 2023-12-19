@@ -82,6 +82,23 @@ public class ConsoleIHM {
 
     }
     private void upd() {
-    
+        String first, last;
+        int id;
+
+        System.out.print("\nIndiquer l'id > ");
+        id = scan.nextInt();
+        scan.nextLine();
+        System.out.print("\nIndiquer le nouveau prénom > ");
+        first = scan.nextLine();
+        System.out.print("\nIndiquer le nouveau nom > ");
+        last = scan.nextLine();
+
+        Person udpPerson = new Person(id,first,last);
+
+        if (personeService.updatePerson(udpPerson)) {
+            System.out.println("mise à jour réussie");
+        } else {
+            System.out.println("echec de mise à jour");
+        }
     }
 }
