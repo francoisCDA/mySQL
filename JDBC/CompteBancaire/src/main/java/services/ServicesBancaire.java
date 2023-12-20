@@ -109,7 +109,6 @@ public class ServicesBancaire {
         CompteBancaire compte = null;
         try {
             compte = compteBancaireDAO.get(numCompte);
-
             if (compte != null ) {
                 if (compte.retirer(montant)) {
                     if (compteBancaireDAO.updateSolde(compte)) {
