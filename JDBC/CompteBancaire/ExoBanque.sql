@@ -31,7 +31,7 @@ ALTER TABLE comptes
 
 CREATE TABLE operations(
 	id_op INT AUTO_INCREMENT PRIMARY KEY,
-    compte int,
+    compte INT,
 	operation VARCHAR(50),
     valeur DOUBLE,
     CONSTRAINT FOREIGN KEY (compte) REFERENCES comptes(num_compte)
@@ -39,3 +39,4 @@ CREATE TABLE operations(
 
 SELECT * FROM clients;
 SELECT * FROM comptes;
+select * from operations;
