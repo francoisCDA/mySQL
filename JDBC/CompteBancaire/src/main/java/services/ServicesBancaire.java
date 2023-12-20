@@ -112,7 +112,7 @@ public class ServicesBancaire {
             if (compte != null ) {
                 if (compte.retirer(montant)) {
                     if (compteBancaireDAO.updateSolde(compte)) {
-                        Operation op = new Operation(compte.getNumero(),montant,Statut.DEPOT);
+                        Operation op = new Operation(compte.getNumero(),montant,Statut.RETRAIT);
                         return operationDAO.add(op);
                     }
                 }
