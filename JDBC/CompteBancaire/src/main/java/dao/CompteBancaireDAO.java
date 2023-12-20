@@ -1,10 +1,12 @@
 package dao;
 
+import models.Client;
 import models.CompteBancaire;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CompteBancaireDAO extends AbstrctDAO<CompteBancaire> {
@@ -48,7 +50,7 @@ public class CompteBancaireDAO extends AbstrctDAO<CompteBancaire> {
 
 
     public boolean updateSolde(CompteBancaire compteBancaire) throws SQLException {
-        request = "UPDATE compte SET solde = ? WHERE num_compte = ?";
+        request = "UPDATE comptes SET solde = ? WHERE num_compte = ?";
         statement = _connection.prepareStatement(request);
         statement.setDouble(1,compteBancaire.getSolde());
         statement.setInt(2,compteBancaire.getNumero());
@@ -63,14 +65,14 @@ public class CompteBancaireDAO extends AbstrctDAO<CompteBancaire> {
     @Override
     public CompteBancaire get(int numCompt) throws SQLException {
         CompteBancaire ret = null;
-        request = "SELECT * FROM comptes WHERE id = ?";
+        request = "SELECT * FROM comptes WHERE num_compte = ?";
         statement = _connection.prepareStatement(request);
         statement.setInt(1,numCompt);
 
         resultSet = statement.executeQuery();
 
         if (resultSet.next()) {
-            ret = new CompteBancaire(resultSet.getInt("num_compt"),
+            ret = new CompteBancaire(resultSet.getInt("num_compte"),
                     resultSet.getDouble("solde")) ;
 
         }
@@ -80,6 +82,47 @@ public class CompteBancaireDAO extends AbstrctDAO<CompteBancaire> {
 
     @Override
     public List<CompteBancaire> get() throws SQLException {
-        return null;
+
+        ArrayList<CompteBancaire> ret = new ArrayList<>();
+
+        request = "SELECT * FROM comptes";
+        statement = _connection.prepareStatement(request);
+        resultSet = statement.executeQuery();
+
+        while (resultSet.next()){
+            CompteBancaire compte = new CompteBancaire(
+                    resultSet.getInt("num_compte"),
+                    resultSet.getDouble("solde")
+            );
+            ret.add(compte);
+
+        }
+
+        return ret;
     }
+
+    public ArrayList<CompteBancaire> getComptesClient(int idClient) throws SQLException {
+
+        ArrayList<CompteBancaire> ret = new ArrayList<>();
+
+        request = "SELECT * FROM comptes WHERE id_client = ?";
+        statement = _connection.prepareStatement(request);
+        statement.setInt(1,idClient);
+        resultSet = statement.executeQuery();
+
+        while (resultSet.next()){
+            CompteBancaire compte = new CompteBancaire(
+                    resultSet.getInt("num_compte"),
+                    resultSet.getDouble("solde")
+            );
+            ret.add(compte);
+
+        }
+
+
+        return ret;
+
+    }
+
+
 }

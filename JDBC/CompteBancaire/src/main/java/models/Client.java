@@ -51,12 +51,8 @@ public class Client {
         this.id = id;
     }
 
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public void setPrenom(String prenom) {
-        this.prenom = prenom;
+    public void setComptesClient(ArrayList<CompteBancaire> comptesClient) {
+        this.comptesClient = comptesClient;
     }
 
     @Override

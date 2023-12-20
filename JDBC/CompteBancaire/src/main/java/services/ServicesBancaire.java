@@ -57,16 +57,26 @@ public class ServicesBancaire {
 
     public int newCompte(int idClient){
 
-        Client client = getClient(idClient);
+        Client client = null;
+        try {
+            client = clientDAO.get(idClient);
 
-        if (client != null) {
-            try {
-                int nouvNum = compteBancaireDAO.getNewCompteById(idClient);
-                return nouvNum ;
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+            if (client != null) {
+
+                try {
+                    int nouvNum = compteBancaireDAO.getNewCompteById(idClient);
+                    return nouvNum ;
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             }
+
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
+
+
 
         return 0;
     }
@@ -109,11 +119,13 @@ public class ServicesBancaire {
             }
 
         } catch (SQLException | ExeptCompte e) {
-            throw new RuntimeException(e);
+            return false;
+            //throw new RuntimeException(e);
         }
 
         return false;
     }
+
 
     public Client getClient(int id) {
 
@@ -139,7 +151,27 @@ public class ServicesBancaire {
     public ArrayList<Client> getClients() {
 
         try {
-            return new ArrayList<>(clientDAO.get());
+            ArrayList<Client> ret = new ArrayList<>(clientDAO.get());
+
+            ret.forEach(cl -> {
+                try {
+                    ArrayList<CompteBancaire> comptes = compteBancaireDAO.getComptesClient(cl.getId());
+                    comptes.forEach( cpt -> {
+                        try {
+                            cpt.setOperation(operationDAO.getOpreationsCompte(cpt.getNumero()));
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+
+                    cl.setComptesClient(comptes);
+
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+
+            return ret ;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -152,12 +184,6 @@ public class ServicesBancaire {
             throw new RuntimeException(e);
         }
     }
-
-
-
-
-
-
 
 
 

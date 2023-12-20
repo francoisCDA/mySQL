@@ -35,8 +35,10 @@ public class ConsoleIHM {
             switch (choix) {
                 case "0" -> run = false;
                 case "1" -> printClients();
-                case "2" -> selectClient();
-                case "3" -> addClient();
+                case "2" -> addClient();
+                case "3" -> addCompte();
+                case "4" -> crediteCompte();
+                case "5" -> debitCompte();
                 default -> System.out.printf("Action inconnue");
             }
 
@@ -46,14 +48,62 @@ public class ConsoleIHM {
 
     }
 
+    private void addCompte() {
+        System.out.println("Ajouter un compte à un client");
+
+        System.out.print("\n\tID du client > ");
+        int idClient = scan.nextInt();
+        scan.nextLine();
+
+        int nouvCompte = services.newCompte(idClient);
+
+        System.out.printf("\n * Ajouter du compte n° %d au client n° %d * \n\n",nouvCompte,idClient);
+
+    }
+
+    private void crediteCompte() {
+        System.out.println("Créditer un compte");
+
+        System.out.print("\n\tNumero de compte > ");
+        int numCompte = scan.nextInt();
+        scan.nextLine();
+
+        System.out.print("\n\tMontant à créditer > ");
+        double credit = scan.nextFloat();
+        scan.nextLine();
+
+        if (services.deposer(numCompte,credit)) {
+            System.out.println("transaction effectuée");
+        } else {
+            System.out.println("transaction refusée");
+        }
+
+    }
+
+    private void debitCompte() {
+        System.out.println("Débiter un compte");
+
+        System.out.print("\n\tNumero de compte > ");
+        int numCompte = scan.nextInt();
+        scan.nextLine();
+
+        System.out.print("\n\tMontant à débiter > ");
+        double credit = scan.nextFloat();
+        scan.nextLine();
+
+        if (services.retirer(numCompte,credit)) {
+            System.out.println("transaction effectuée");
+        } else {
+            System.out.println("transaction refusée");
+        }
+
+    }
+
     private void printClients() {
         ArrayList<Client> clients = services.getClients();
         clients.forEach(System.out::println);
     }
 
-    private void selectClient() {
-
-    }
 
     private void addClient() {
         String first, last, tel;
@@ -81,8 +131,11 @@ public class ConsoleIHM {
 
         System.out.println("\n\tChoisir une action :");
         System.out.println("\n\t1 < Afficher les clients");
-        System.out.println("\t2 < Détails Client");
-        System.out.println("\t3 < Ajouter un Client");
+        System.out.println("\t2 < Ajouter un client");
+        System.out.println("\t3 < Ajouter un Compte à un client");
+        System.out.println("\t4 < Crediter un compte");
+        System.out.println("\t5 < Debiter un compte");
+
         System.out.println("\n\t0 < Quitter");
 
 

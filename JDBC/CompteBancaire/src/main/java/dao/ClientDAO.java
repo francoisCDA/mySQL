@@ -49,8 +49,10 @@ public class ClientDAO extends AbstrctDAO<Client>{
     @Override
     public Client get(int id) throws SQLException {
         Client ret = null;
-        request = "SELECT * FROM clients WHERE id  = ?";
+        request = "SELECT * FROM clients WHERE id = ?";
+        statement = _connection.prepareStatement(request);
         statement.setInt(1,id);
+
         resultSet = statement.executeQuery();
 
         if (resultSet.next()){

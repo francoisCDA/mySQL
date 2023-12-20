@@ -32,12 +32,13 @@ public class CompteBancaire {
         return operation;
     }
 
-    public void setNumero(int numero) {
-        this.numero = numero;
-    }
 
     public void deposer(double depot) {
         solde += depot;
+    }
+
+    public void setOperation(ArrayList<Operation> operation) {
+        this.operation = operation;
     }
 
     public boolean retirer(double retrait) throws ExeptCompte {
@@ -49,6 +50,8 @@ public class CompteBancaire {
     @Override
     public String toString() {
         return "\n\tCompte n°" + numero +
-                ", solde :" + solde + '.';
+                ", solde :" + solde
+                + ", operation : " + operation
+                + '.';
     }
 }

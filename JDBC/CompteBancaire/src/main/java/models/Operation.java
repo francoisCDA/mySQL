@@ -31,7 +31,7 @@ public class Operation {
     @Override
     public String toString() {
         return "Operation " +  statut  +
-                "sur compte " + numero +
+                " sur compte " + numero +
                 " d'un montant de " + montant +
                 '.';
     }
