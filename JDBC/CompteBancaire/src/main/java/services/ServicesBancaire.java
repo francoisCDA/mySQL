@@ -82,6 +82,7 @@ public class ServicesBancaire {
     }
 
     public boolean deposer(int numCompte, double montant ) {
+        if (montant < 0 ) return false;
         try {
             CompteBancaire compte = compteBancaireDAO.get(numCompte);
 
@@ -104,7 +105,7 @@ public class ServicesBancaire {
 
 
     public boolean retirer(int numCompte, double montant) {
-
+        if (montant < 0 ) return false;
         CompteBancaire compte = null;
         try {
             compte = compteBancaireDAO.get(numCompte);
